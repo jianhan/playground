@@ -35,7 +35,7 @@ class ClassRoom {
 	private $persons;
 	
 	// stricted type 
-	public function addPerson(Person $person) {
+	public function addPerson(Person ...$person) {
 		$this->persons[] = $person;
 	}
 
@@ -60,12 +60,11 @@ class ClassRoom {
 $p1 = new Person("James Cook", 140);
 $p2 = new Person("Bob Bob", 20);
 $p3 = new Person("John Doe", 30);
-$d1 = new Dog("Kim");
+$d1 = new Dog("Jack");
+$d2 = new Dog("Bill");
 
 $classRoom = new ClassRoom();
-$classRoom->addPerson($p1);
-$classRoom->addPerson($p2);
-$classRoom->addPerson($p3);
-$classRoom->addPerson($d1);
+$classRoom->addPerson($p1, $p2, $p3, $d1, $d2);
+
 
 var_dump($classRoom->getPersons());
