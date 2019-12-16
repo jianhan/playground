@@ -1,5 +1,45 @@
 <?php
 
+function identity($arg) {
+    return $arg;
+}
+
+function compose2(...$functions)
+{
+    return \array_reduce(
+        $functions,
+        function ($carry, $item) {
+            return function ($x) use ($carry, $item) {
+                return $item($carry($x));
+
+            };
+
+        },
+            'identity'
+
+        );
+
+}
+
+
+function pipe(...$functions) {
+
+    return function ($x) use ($functions) {
+        return array_reduce(
+            $functions,
+            function($accumulator, $current) {
+                # var_dump('current is ', $current, 'example input 2 output: '. $current(2));
+                # var_dump('============================================================');
+                return $current($accumulator);
+            },
+                $x
+            );
+    };
+}
+
+
+
+
 function compose(...$functions) {
 
     return function ($x) use ($functions) {
@@ -7,14 +47,12 @@ function compose(...$functions) {
         return array_reduce(
             $functions,
             function($accumulator, $current) {
-                var_dump('current is ', $current, 'example input 2 output: '. $current(2));
-                var_dump('============================================================');
+                # var_dump('current is ', $current, 'example input 2 output: '. $current(2));
+                # var_dump('============================================================');
                 return $current($accumulator);
             },
-            $x
-        );
-
-        return $func($x);
+                $x
+            );
     };
 }
 
@@ -33,5 +71,5 @@ $dec = function($x) {
 
 $final = compose($inc, $double, $double);
 
-var_dump($final(3));
+var_dump($final);
 ?>
